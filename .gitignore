@@ -1,2 +1,8 @@
+# ts & cie
 .parcel-cache
 node_modules
+
+# IDE
+.idea
+.vscode
+

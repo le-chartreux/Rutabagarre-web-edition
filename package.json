@@ -1,0 +1,33 @@
+{
+  "name": "rutabagarre-web-edition",
+  "version": "1.0.0",
+  "description": "Fighting game with plants 🧑‍🌾🥊🥔🌽🥕",
+  "source": "app/src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint",
+    "check": "tsc --noEmit",
+    "ci": "npx build && npx test && npx lint && npx check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/le-chartreux/Rutabagarre-web-edition.git"
+  },
+  "keywords": [
+    "game",
+    "fight",
+    "plants"
+  ],
+  "author": "le-chartreux",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/le-chartreux/Rutabagarre-web-edition/issues"
+  },
+  "homepage": "https://github.com/le-chartreux/Rutabagarre-web-edition#readme",
+  "devDependencies": {
+    "parcel": "^2.6.2",
+    "typescript": "^4.7.4"
+  }
+}
