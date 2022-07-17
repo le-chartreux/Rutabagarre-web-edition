@@ -5,9 +5,9 @@
   "source": "app/html/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build",
+    "build": "rm -rf dist/* && parcel build --public-url '.'",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "gh-pages -d dist"
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "repository": {
     "type": "git",
