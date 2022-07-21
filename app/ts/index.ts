@@ -1,3 +1,5 @@
-window.onload = () => {
-    console.log('Hello World');
+export {main}
+
+function main() {
+    console.log("Hello World");
 }

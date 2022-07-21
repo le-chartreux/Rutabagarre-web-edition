@@ -1,4 +1,5 @@
-h1 {
-    color: hotpink;
-    font-family: cursive;
+header {
+    display: flex;
+    justify-content: center;
+    height: 10vh;
 }
