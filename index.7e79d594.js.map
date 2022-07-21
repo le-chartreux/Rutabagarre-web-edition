@@ -1,1 +1,0 @@
-{"mappings":"AAAAA,OAAOC,OAAS,KACZC,QAAQC,IAAI","sources":["app/ts/index.ts"],"sourcesContent":["window.onload = () => {\n    console.log('Hello World');\n}\n"],"names":["window","onload","console","log"],"version":3,"file":"index.7e79d594.js.map"}
