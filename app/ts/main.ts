@@ -1,15 +1,9 @@
-import {World} from "./world";
+import {Controller} from "./controller";
+import {Model} from "~app/ts/model";
+import {View} from "~app/ts/view";
 
-function start() {
-    alert("Game started");
+let model = new Model()
+let view = new View()
+let controller = new Controller(model, view)
+controller.setup()
 
-    let world = new World(13, 200);
-}
-
-// binding
-let startButton = document.getElementById("start-button")
-if (startButton) {
-    startButton.onclick = start
-} else {
-    console.error("Start button not found on DOM, so we can't bind it.")
-}
