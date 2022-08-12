@@ -1,5 +1,10 @@
-header {
-    display: flex;
-    justify-content: center;
-    height: 10vh;
+body {
+    margin: 0;
+    height: 100%;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
