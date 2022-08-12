@@ -1,0 +1,5 @@
+class Bloc {
+
+}
+
+export {Bloc}

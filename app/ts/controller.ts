@@ -1,28 +1,22 @@
 import {View} from "./view"
-import {Model} from "./model"
+import {World} from "./world"
 
 class Controller {
 
-    private model: Model
+    private world: World
     private view: View
 
-    constructor(model: Model, view: View) {
-        this.model = model
-        this.view = view
+    constructor() {
+        this.world = World.createDefaultWorld()
+        this.view = new View()
     }
 
     public setup(): void {
-        // binding buttons
-        let startButton = document.getElementById("start-button")
-        if (startButton) {
-            startButton.onclick = this.start
-        } else {
-            console.error("Start button not found on DOM, so we can't bind it.")
-        }
+
     }
 
-    private start(): void{
-        alert("start button clicked")
+    public run(): void {
+        this.view.tick()
     }
 }
 
