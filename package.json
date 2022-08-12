@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/le-chartreux/Rutabagarre-web-edition#readme",
   "devDependencies": {
+    "@types/three": "^0.143.0",
     "eslint": "^6.8.0",
     "gh-pages": "^4.0.0",
     "parcel": "^2.6.2",
@@ -34,5 +35,8 @@
     "drafts": {
       "nesting": true
     }
+  },
+  "dependencies": {
+    "three": "^0.143.0"
   }
 }
