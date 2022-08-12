@@ -1,1 +1,0 @@
-{"mappings":"ACAA","sources":["index.6feab20f.css","app/css/styles.css"],"sourcesContent":["header {\n  height: 10vh;\n  justify-content: center;\n  display: flex;\n}\n\n/*# sourceMappingURL=index.6feab20f.css.map */\n","header {\n    display: flex;\n    justify-content: center;\n    height: 10vh;\n}"],"names":[],"version":3,"file":"index.6feab20f.css.map"}
