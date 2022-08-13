@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import {GameScene} from "~app/ts/scene/game-scene";
+import {GameScene} from "~app/ts/view/game-scene";
 
 class View {
     private readonly width
@@ -13,7 +13,7 @@ class View {
         this.width = window.innerWidth
         this.height = window.innerHeight
 
-        // creating the renderer, the tool that draws the part of the scene that the camera sees
+        // creating the renderer, the tool that draws the part of the view that the camera sees
         // we set it onto the canvas named 'app'
         this.renderer = new THREE.WebGLRenderer({
             canvas: document.getElementById('app') as HTMLCanvasElement
@@ -27,24 +27,28 @@ class View {
         // objects between <near> and <far> will be visible
         this.mainCamera = new THREE.PerspectiveCamera(60, this.width / this.height, 0.1, 100)
 
-        // creating the scene object, that represents the content that will be rendered
+        // creating the view object, that represents the content that will be rendered
         this.scene = new GameScene()
         this.scene.initialize()
 
     }
 
-    public update(): void {
+    /**
+     * Updates the view. Each call to <tick> updates the view, then renders it.
+     */
+    private tick(): void {
         this.scene.update()
         this.renderer.render(this.scene, this.mainCamera)
     }
 
     /**
-     * Loop that updates the scene. Each call to <tick> updates the scene, then renders it, then asks to call tick later
+     * Start the view update loop.
+     * Each call to <run> updates the view, then renders it, then asks to call <run> later with the
+     * <requestAnimationFrame> function (for better performances than <setTimeout>)
      */
-    public tick(): void {
-        this.scene.update()
-        this.renderer.render(this.scene, this.mainCamera)
-        window.requestAnimationFrame(() => this.tick())
+    public run(): void {
+        this.tick()
+        window.requestAnimationFrame(() => this.run())
     }
 }
 

@@ -1,5 +1,5 @@
-import {View} from "./view"
-import {World} from "./world"
+import {View} from "./view/view"
+import {World} from "./world/world"
 
 class Controller {
 
@@ -16,7 +16,8 @@ class Controller {
     }
 
     public run(): void {
-        this.view.tick()
+        this.view.run()
+        this.world.run()
     }
 }
 

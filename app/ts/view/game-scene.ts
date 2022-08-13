@@ -2,7 +2,7 @@ import * as THREE from 'three'
 
 class GameScene extends THREE.Scene {
     /**
-     * Creates all the objects of the scene
+     * Creates all the objects of the view
      */
     public initialize(): void {
         this.createLight()
@@ -10,7 +10,7 @@ class GameScene extends THREE.Scene {
     }
 
     /**
-     * Creates the light of the scene. It's a standard light: white and 100% intensity.
+     * Creates the light of the view. It's a standard light: white and 100% intensity.
      */
     private createLight(): void {
         const light = new THREE.DirectionalLight(0xFFFFFF, 1)
@@ -20,7 +20,7 @@ class GameScene extends THREE.Scene {
     }
 
     /**
-     * Creates all the incarnations of the scene
+     * Creates all the incarnations of the view
      */
     private createIncarnations(): void {
         // for now, it only creates a cube
@@ -38,12 +38,19 @@ class GameScene extends THREE.Scene {
     }
 
     /**
-     * Updates everything in the scene
+     * Updates everything in the view
      */
+    private direction = 1
     public update(): void {
         let cube = this.getObjectByName("cube")
         if (cube != null) {
-            cube.position.x += 0.1
+            if (cube.position.x > 5) {
+                this.direction = -1
+            } else if (cube.position.x < -5) {
+                this.direction = 1
+            }
+            cube.position.x += 0.05 * this.direction
+
         } else {
             console.error("Can't find the cube")
         }
