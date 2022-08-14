@@ -2,7 +2,7 @@ import * as THREE from 'three'
 
 class GameScene extends THREE.Scene {
     /**
-     * Creates all the objects of the view
+     * Creates all the objects of the scene
      */
     public initialize(): void {
         this.createLight()
@@ -20,7 +20,7 @@ class GameScene extends THREE.Scene {
     }
 
     /**
-     * Creates all the incarnations of the view
+     * Creates all the incarnations of the scene
      */
     private createIncarnations(): void {
         // for now, it only creates a cube
@@ -38,7 +38,7 @@ class GameScene extends THREE.Scene {
     }
 
     /**
-     * Updates everything in the view
+     * Updates everything in the scene
      */
     private direction = 1
     public update(): void {

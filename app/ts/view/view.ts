@@ -34,7 +34,7 @@ class View {
     }
 
     /**
-     * Updates the view. Each call to <tick> updates the view, then renders it.
+     * Updates the view. Each call to <tick> updates the scene, then renders it.
      */
     private tick(): void {
         this.scene.update()
