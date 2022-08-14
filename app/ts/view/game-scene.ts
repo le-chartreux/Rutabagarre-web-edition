@@ -1,12 +1,15 @@
 import * as THREE from 'three'
+import {Drawable} from "~app/ts/view/drawable";
 
 class GameScene extends THREE.Scene {
+
     /**
-     * Creates all the objects of the scene
+     * Clean the scene then creates all the objects
      */
-    public initialize(): void {
+    public draw(): void {
+        this.clear()
         this.createLight()
-        this.createIncarnations()
+        this.createObjects()
     }
 
     /**
@@ -20,39 +23,13 @@ class GameScene extends THREE.Scene {
     }
 
     /**
-     * Creates all the incarnations of the scene
+     * Creates all the objects of the scene
      */
-    private createIncarnations(): void {
-        // for now, it only creates a cube
-
-        // geometry = vertices
-        const geometry = new THREE.BoxGeometry()
-        // material = how the shape will look in terms of colors & textures; here orange
-        const material = new THREE.MeshPhongMaterial({color: 0xFFAD00})
-        const cube = new THREE.Mesh(geometry, material)
-        cube.position.x = 0
-        cube.position.y = -1
-        cube.position.z = -5
-        cube.name = "cube"
-        this.add(cube)
-    }
-
-    /**
-     * Updates everything in the scene
-     */
-    private direction = 1
-    public update(): void {
-        let cube = this.getObjectByName("cube")
-        if (cube != null) {
-            if (cube.position.x > 5) {
-                this.direction = -1
-            } else if (cube.position.x < -5) {
-                this.direction = 1
+    private createObjects(): void {
+        for (let drawable of Drawable.drawables) {
+            if (drawable.visible) {
+                this.add(drawable.object3D)
             }
-            cube.position.x += 0.05 * this.direction
-
-        } else {
-            console.error("Can't find the cube")
         }
     }
 }

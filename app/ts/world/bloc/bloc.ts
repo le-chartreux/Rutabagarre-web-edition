@@ -1,5 +1,0 @@
-class Bloc {
-
-}
-
-export {Bloc}

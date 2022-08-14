@@ -11,9 +11,7 @@ class Controller {
         this.view = new View()
     }
 
-    public setup(): void {
-
-    }
+    public setup(): void {}
 
     public run(): void {
         this.view.run()

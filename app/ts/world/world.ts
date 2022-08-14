@@ -1,4 +1,5 @@
 import {PhysicalElement} from "./physical-element";
+import {Structure} from "~app/ts/world/structure/structure";
 
 class World {
     private readonly delayBetweenComputations = 1000 / 60  // in ms, here 60 computations per second
@@ -6,22 +7,29 @@ class World {
     constructor(
         private width: number,
         private height: number,
-        private physicalElements: PhysicalElement[] = []
+        public physicalElements: PhysicalElement[] = []
     ) {}
 
     /**
      * Factory that creates the default world.
      */
     static createDefaultWorld(): World {
-        let defaultWorld = new World(30, 20)
-        return defaultWorld
+        return new World(
+            30,
+            20,
+            [
+                new Structure(0, -1, [[[0, 0], [1, 0], [1, 1], [0, 1]]]),
+                new Structure(1, -1, [[[0, 0], [1, 0], [1, 1], [0, 1]]]),
+                new Structure(2, -1, [[[0, 0], [1, 0], [1, 1], [0, 1]]]),
+            ]
+        )
     }
 
     /**
      * Treats changes in the model.
      */
     private tick() {
-        console.log("model tick")
+        this.physicalElements.forEach((element) => element.update())
     }
 
     /**
