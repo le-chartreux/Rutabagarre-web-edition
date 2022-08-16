@@ -18,7 +18,7 @@ class GameScene extends THREE.Scene {
     private createLight(): void {
         const light = new THREE.DirectionalLight(0xFFFFFF, 1)
         // above the camera
-        light.position.set(0, 4, 2)
+        light.position.set(15, 15, 13)
         this.add(light)
     }
 

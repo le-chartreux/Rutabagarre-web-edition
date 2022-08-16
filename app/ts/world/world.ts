@@ -2,7 +2,7 @@ import {PhysicalElement} from "./physical-element";
 import {Structure} from "~app/ts/world/structure/structure";
 
 class World {
-    private readonly delayBetweenComputations = 1000 / 60  // in ms, here 60 computations per second
+    private readonly delayBetweenComputations = 1000 / 6  // in ms, here 6 computations per second
 
     constructor(
         private width: number,
@@ -14,14 +14,28 @@ class World {
      * Factory that creates the default world.
      */
     static createDefaultWorld(): World {
+
+        // main platform
+        let structures = Array.from({length:22}, (_, i) => new Structure(i + 4, 6, []))
+        structures.concat(Array.from({length:22}, (_, i) => new Structure(i + 4, 5, [])))
+        structures.concat(Array.from({length:20}, (_, i) => new Structure(i + 5, 4, [])))
+        structures.concat(Array.from({length:6}, (_, i) => new Structure(i + 9, 3, [])))
+        structures.push(new Structure(16, 3, []))
+        structures.concat(Array.from({length:3}, (_, i) => new Structure(i + 20, 3, [])))
+        structures.concat(Array.from({length:3}, (_, i) => new Structure(i + 11, 2, [])))
+        structures.push(new Structure(16, 2, []))
+
+        // left small platform
+        structures.concat(Array.from({length:4}, (_, i) => new Structure(i + 7, 10, [])))
+        // right small platform
+        structures.concat(Array.from({length:4}, (_, i) => new Structure(i + 19, 10, [])))
+        // top platform
+        structures.concat(Array.from({length:4}, (_, i) => new Structure(i + 13, 14, [])))
+
         return new World(
             30,
             20,
-            [
-                new Structure(0, -1, [[[0, 0], [1, 0], [1, 1], [0, 1]]]),
-                new Structure(1, -1, [[[0, 0], [1, 0], [1, 1], [0, 1]]]),
-                new Structure(2, -1, [[[0, 0], [1, 0], [1, 1], [0, 1]]]),
-            ]
+            structures
         )
     }
 

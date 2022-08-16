@@ -32,7 +32,7 @@ class View {
         // aspect ratio is often 16/9
         // objects between <near> and <far> will be visible
         this.mainCamera = new THREE.PerspectiveCamera(60, this.width / this.height, 0.1, 100)
-        this.mainCamera.position.set(0, 0, 6)
+        this.mainCamera.position.set(15, 9, 16)
 
         // creating the view object, that represents the content that will be rendered
         this.scene = new GameScene()
