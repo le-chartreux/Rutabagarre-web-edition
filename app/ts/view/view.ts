@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import {GameScene} from "~app/ts/view/game-scene";
+import {PhysicalElement} from "~app/ts/world/physical-element";
 
 class View {
     private width: number
@@ -22,30 +23,31 @@ class View {
             canvas: document.getElementById('app') as HTMLCanvasElement,
             antialias: true
         })
+        // adding a tone mapping so it looks nicer TODO read more about it
+        this.renderer.toneMapping = THREE.ACESFilmicToneMapping
         // the renderer area is the entire page
         this.renderer.setSize(this.width, this.height)
         // the background is blue (the sky)
         this.renderer.setClearColor(0x87ceff)
 
         // creating the main camera, the tool that decides how and from where the game will be seen
-        // vertical field of view is 60, so the camera is like and eye open at 60°
-        // aspect ratio is often 16/9
-        // objects between <near> and <far> will be visible
-        this.mainCamera = new THREE.PerspectiveCamera(60, this.width / this.height, 0.1, 100)
-        this.mainCamera.position.set(15, 9, 16)
+        // - vertical field of view is 60, so the camera is like and eye open at 60°
+        // - aspect ratio is often 16/9
+        // - objects between <near> and <far> will be visible
+        this.mainCamera = new THREE.PerspectiveCamera(60, this.width / this.height, 5, 100)
+        // setup of the camera: 40 away from the (0, 0), centered on the (0, 0)
+        this.mainCamera.position.set(0, 0, -40)  // the highest the z axis of an element is, farthest it is
+        this.mainCamera.lookAt(0, 0, 0)
 
-        // creating the view object, that represents the content that will be rendered
+        // creating the scene object, that represents the content that will be rendered
         this.scene = new GameScene()
-
-        // creating the event listener on resize
-        window.addEventListener("resize", () => this.onResize())
     }
 
     /**
      * Updates the view. Each call to <tick> updates the scene, then renders it.
      */
-    private tick(): void {
-        this.scene.draw()
+    private tick(physicalElements: PhysicalElement[]): void {
+        this.scene.draw(physicalElements)
         this.renderer.render(this.scene, this.mainCamera)
     }
 
@@ -54,15 +56,15 @@ class View {
      * Each call to <run> updates the view, then renders it, then asks to call <run> later with the
      * <requestAnimationFrame> function (for better performances than <setTimeout>)
      */
-    public run(): void {
-        this.tick()
-        window.requestAnimationFrame(() => this.run())
+    public run(getPhysicalElements: CallableFunction): void {
+        this.tick(getPhysicalElements())
+        window.requestAnimationFrame(() => this.run(getPhysicalElements))
     }
 
     /**
      * Method to update the viewport on resize
      */
-    private onResize() {
+    public onResize() {
         // resetting the dimensions
         this.width = window.innerWidth
         this.height = window.innerHeight
