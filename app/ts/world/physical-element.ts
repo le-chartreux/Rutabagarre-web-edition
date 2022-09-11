@@ -1,4 +1,8 @@
+import {v4 as uuidv4} from 'uuid'
+
 abstract class PhysicalElement {
+
+    protected _uuid: string
 
     /**
      * Creates a physical element, i.e. an element that has a hitbox.
@@ -12,7 +16,9 @@ abstract class PhysicalElement {
         protected _x: number,
         protected _y: number,
         protected _hitbox: [number, number, number, number]
-    ) {}
+    ) {
+        this._uuid = uuidv4()
+    }
 
     /**
      * Updates this element (does everything needed on this tick)
@@ -28,6 +34,18 @@ abstract class PhysicalElement {
      */
     public touches(otherElem: PhysicalElement): boolean {
         return false  // TODO
+    }
+
+    public get x(): number {
+        return this._x
+    }
+
+    public get y(): number {
+        return this._y
+    }
+
+    public get uuid(): string {
+        return this._uuid
     }
 
 }

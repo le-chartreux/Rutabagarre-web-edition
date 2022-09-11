@@ -14,48 +14,60 @@ class GameScene extends THREE.Scene {
     }
 
     /**
-     * Clean the scene then creates all the objects
+     * Clean the scene the creates all the objects. Should be called only one time
      */
-    public draw(physicalElements: PhysicalElement[]): void {
+    public initialize(physicalElements: PhysicalElement[]): void {
         this.clear()
-        this.createLight()
-        this.createObjects(physicalElements)
+        this.createLights()
+        this.add(new THREE.AxesHelper(5))
+        // creating all the physical elements
+        physicalElements.forEach((value) => this.createPhysicalElement(value))
     }
 
     /**
-     * Creates the light of the view. It's a standard light: white and 100% intensity.
+     * Actualize all the representations of the physical elements
      */
-    private createLight(): void {
-        const aLight = new THREE.AmbientLight(0xFFFFFF, 0.1)
-        // above the camera
+    public actualize(physicalElements: PhysicalElement[]): void {
+        // for each element, treating possible changes
+        // TODO
+        // for each child, checking if the element still exists (and removing it from the scene if not)
+        // TODO
+    }
+
+    /**
+     * Creates the lights of the view: one ambient light and one directional light
+     */
+    private createLights(): void {
+        const aLight = new THREE.AmbientLight(0xFFFFFF, 0.4)
         aLight.position.set(0, 30, 0)
         this.add(aLight)
 
         const dLight = new THREE.DirectionalLight(0xFFFFFF, 0.6)
-        // above the camera
-        dLight.position.set(0, 30, 0)
+        dLight.position.set(0, 30, 20)
+        dLight.lookAt(0, 0, 0)
         this.add(dLight)
     }
 
     /**
-     * Creates all the objects of the scene
+     * Creates one object of the scene
      */
-    private createObjects(physicalElements: PhysicalElement[]): void {
-        for (let physicalElement of physicalElements) {
-            if (!this.physicalElementDrawers.has(typeof physicalElement)) {
-                switch (typeof physicalElement) {
-                    case "Structure":
-                        // TODO make it work
-                        this.physicalElementDrawers.set(typeof physicalElement, new StructureDrawer())
-                        break
-                    default:
-                        console.error("Error: physical element has no drawer found.")
-                        return
-                }
-                let drawer = this.physicalElementDrawers.get(typeof physicalElement) as PhysicalElementDrawer
-                this.add(drawer.get3dObject(physicalElement))
+    private createPhysicalElement(physicalElement: PhysicalElement): void {
+        if (! this.physicalElementDrawers.has(physicalElement.constructor.name)) {
+            // if there is no drawer for this type of physical element, then we create a new drawer
+            switch (physicalElement.constructor.name) {
+                case "Structure":
+                    this.physicalElementDrawers.set(physicalElement.constructor.name, new StructureDrawer())
+                    break
+                default:
+                    console.error(`Error: physical element ${physicalElement.constructor.name} has no drawer found.`)
+                    return  // we should not continue since there is no drawer
             }
         }
+        let drawer = this.physicalElementDrawers.get(physicalElement.constructor.name) as PhysicalElementDrawer
+        let element = drawer.get3dObject(physicalElement)
+        element.position.set(physicalElement.x, physicalElement.y, 0)
+        element.uuid = physicalElement.uuid
+        this.add(element)
     }
 }
 
