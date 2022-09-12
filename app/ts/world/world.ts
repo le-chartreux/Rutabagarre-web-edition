@@ -19,20 +19,20 @@ class World {
         // TODO from json
         // main platform
         let structures = Array.from({length:22}, (_, i) => new Structure(i + 4, 6, [0, 0, 1, 1], StructureType.DIRT))
-        structures.concat(Array.from({length:22}, (_, i) => new Structure(i + 4, 5, [0, 0, 1, 1], StructureType.DIRT)))
-        structures.concat(Array.from({length:20}, (_, i) => new Structure(i + 5, 4, [0, 0, 1, 1], StructureType.DIRT)))
-        structures.concat(Array.from({length:6}, (_, i) => new Structure(i + 9, 3, [0, 0, 1, 1], StructureType.DIRT)))
+        structures.push(...Array.from({length:22}, (_, i) => new Structure(i + 4, 5, [0, 0, 1, 1], StructureType.DIRT)))
+        structures.push(...Array.from({length:20}, (_, i) => new Structure(i + 5, 4, [0, 0, 1, 1], StructureType.DIRT)))
+        structures.push(...Array.from({length:6}, (_, i) => new Structure(i + 9, 3, [0, 0, 1, 1], StructureType.DIRT)))
         structures.push(new Structure(16, 3, [0, 0, 1, 1], StructureType.DIRT))
-        structures.concat(Array.from({length:3}, (_, i) => new Structure(i + 20, 3, [0, 0, 1, 1], StructureType.DIRT)))
-        structures.concat(Array.from({length:3}, (_, i) => new Structure(i + 11, 2, [0, 0, 1, 1], StructureType.DIRT)))
+        structures.push(...Array.from({length:3}, (_, i) => new Structure(i + 20, 3, [0, 0, 1, 1], StructureType.DIRT)))
+        structures.push(...Array.from({length:3}, (_, i) => new Structure(i + 11, 2, [0, 0, 1, 1], StructureType.DIRT)))
         structures.push(new Structure(16, 2, [0, 0, 1, 1], StructureType.DIRT))
 
         // left small platform
-        structures.concat(Array.from({length:4}, (_, i) => new Structure(i + 7, 10, [0, 0, 1, 1], StructureType.DIRT)))
+        structures.push(...Array.from({length:4}, (_, i) => new Structure(i + 7, 10, [0, 0, 1, 1], StructureType.DIRT)))
         // right small platform
-        structures.concat(Array.from({length:4}, (_, i) => new Structure(i + 19, 10, [0, 0, 1, 1], StructureType.DIRT)))
+        structures.push(...Array.from({length:4}, (_, i) => new Structure(i + 19, 10, [0, 0, 1, 1], StructureType.DIRT)))
         // top platform
-        structures.concat(Array.from({length:4}, (_, i) => new Structure(i + 13, 14, [0, 0, 1, 1], StructureType.DIRT)))
+        structures.push(...Array.from({length:4}, (_, i) => new Structure(i + 13, 14, [0, 0, 1, 1], StructureType.DIRT)))
 
         return new World(structures)
     }
