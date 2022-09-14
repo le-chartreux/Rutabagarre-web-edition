@@ -37,7 +37,7 @@ class View {
         // - vertical field of view is 60, so the camera is like and eye open at 60°
         // - aspect ratio is often 16/9
         // - objects between <near> and <far> will be visible
-        this._mainCamera = new THREE.PerspectiveCamera(60, this._width / this._height, 5, 100)
+        this._mainCamera = new THREE.PerspectiveCamera(60, this._width / this._height, 1, 1000)
         // setup of the camera: 40 away from the (0, 0), centered on the (0, 0)
         this._mainCamera.position.set(0, 0, 40)  // the closest to 40 the z axis of an element is, nearest it is
         this._mainCamera.lookAt(0, 0, 0)
@@ -58,6 +58,8 @@ class View {
      */
     private tick(): void {
         this._scene.actualize(this._physicalElementsGetter())
+        this._mainCamera.position.set(...this.cameraPosition)
+        this._mainCamera.lookAt(...this.cameraTarget, 0)
         this._renderer.render(this._scene, this._mainCamera)
     }
 
@@ -85,6 +87,42 @@ class View {
         // resetting the aspect ratio
         this._mainCamera.aspect = this._width / this._height
         this._mainCamera.updateProjectionMatrix()
+    }
+
+    /**
+     * @returns a tuple (x, y), the point to where the camera should look at, i.e. the center of the map if there is no
+     *  incarnation and the average of the incarnation positions else
+     */
+    private get cameraTarget(): [number, number] {
+        let xMin = Math.min(...this._physicalElementsGetter().map(function(elem: PhysicalElement) { return elem.x }))
+        let xMax = Math.max(...this._physicalElementsGetter().map(function(elem: PhysicalElement) { return elem.x }))
+        let yMin = Math.min(...this._physicalElementsGetter().map(function(elem: PhysicalElement) { return elem.y }))
+        let yMax = Math.max(...this._physicalElementsGetter().map(function(elem: PhysicalElement) { return elem.y }))
+        return [(xMin + xMax) / 2, (yMin + yMax) / 2]  // todo include possibility of player-centered camera
+    }
+
+    /**
+     * @returns a tuple (x, y, z), the point to where the camera is, i.e. the camera target far enough to see all the
+     *  players + a margin, so they can see around them if there is players, the whole map else
+     */
+    private get cameraPosition(): [number, number, number] {
+        let fovInRad = (this._mainCamera.fov * 2 * Math.PI) / 360
+
+        // TODO fix it (too small)
+        let xMin = Math.min(...this._physicalElementsGetter().map(function(elem: PhysicalElement) { return elem.x }))
+        let xMax = Math.max(...this._physicalElementsGetter().map(function(elem: PhysicalElement) { return elem.x }))
+        // + 0.5 since object positions are their center
+        let distanceForFullX = (((xMax + 0.5) - (xMin - 0.5)) / 2) / Math.tan(fovInRad / 2) / this._mainCamera.aspect
+
+        // TODO fix it (too small)
+        let yMin = Math.min(...this._physicalElementsGetter().map(function(elem: PhysicalElement) { return elem.y }))
+        let yMax = Math.max(...this._physicalElementsGetter().map(function(elem: PhysicalElement) { return elem.y }))
+        // + 0.5 since object positions are their center
+        let distanceForFullY = (((yMax + 0.5) - (yMin - 0.5)) / 2) / Math.tan(fovInRad / 2)
+
+        // * 1.1 to have a little more around
+        console.log(distanceForFullX, distanceForFullY)
+        return [...this.cameraTarget, Math.max(distanceForFullX, distanceForFullY) * 1.1]
     }
 }
 
