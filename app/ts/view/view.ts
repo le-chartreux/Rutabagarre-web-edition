@@ -1,6 +1,8 @@
 import * as THREE from 'three'
+import WebGL from 'three/examples/jsm/capabilities/WebGL'
 import {GameScene} from "~app/ts/view/game-scene";
 import {PhysicalElement} from "~app/ts/world/physical-element";
+import {StructureDrawer} from "~app/ts/view/drawer/structure-drawer";
 
 class View {
     // page attributes
@@ -17,6 +19,13 @@ class View {
      * @param _physicalElementsGetter: function (or method) that when called returns all the physical elements to consider
      */
     constructor(private _physicalElementsGetter: () => PhysicalElement[]) {
+        // checking if webgl is available for this browser
+        if (! WebGL.isWebGLAvailable()) {
+            const errorMessage = "Error: your desktop doesn't support WebGL. Impossible to show the game."
+            alert(errorMessage)
+            throw new Error(errorMessage)
+        }
+
         this._width = window.innerWidth
         this._height = window.innerHeight
 
@@ -39,8 +48,8 @@ class View {
         // - objects between <near> and <far> will be visible
         this._mainCamera = new THREE.PerspectiveCamera(60, this._width / this._height, 1, 1000)
         // setup of the camera: 40 away from the (0, 0), centered on the (0, 0)
-        this._mainCamera.position.set(0, 0, 40)  // the closest to 40 the z axis of an element is, nearest it is
-        this._mainCamera.lookAt(0, 0, 0)
+        this._mainCamera.position.set(...this.cameraPosition)
+        this._mainCamera.lookAt(...this.cameraTarget, 0)
 
         // creating the scene object, that represents the content that will be rendered
         this._scene = new GameScene()
@@ -60,6 +69,8 @@ class View {
         this._scene.actualize(this._physicalElementsGetter())
         this._mainCamera.position.set(...this.cameraPosition)
         this._mainCamera.lookAt(...this.cameraTarget, 0)
+        console.log("position: " + String(this.cameraPosition))
+        console.log("target: " + String(this.cameraTarget))
         this._renderer.render(this._scene, this._mainCamera)
     }
 
@@ -121,7 +132,6 @@ class View {
         let distanceForFullY = (((yMax + 0.5) - (yMin - 0.5)) / 2) / Math.tan(fovInRad / 2)
 
         // * 1.1 to have a little more around
-        console.log(distanceForFullX, distanceForFullY)
         return [...this.cameraTarget, Math.max(distanceForFullX, distanceForFullY) * 1.1]
     }
 }
