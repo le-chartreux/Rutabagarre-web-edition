@@ -7,7 +7,7 @@
     "start": "parcel",
     "build": "rm -rf dist/* && parcel build --public-url '.'",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "npm run build && gh-pages -d dist && rm -rfr dist/*"
+    "deploy": "npm run build && npx gh-pages -d dist && rm -rfr dist/*"
   },
   "repository": {
     "type": "git",
