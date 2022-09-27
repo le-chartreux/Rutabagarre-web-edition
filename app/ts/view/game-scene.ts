@@ -55,12 +55,11 @@ class GameScene extends THREE.Scene {
         if (! this.physicalElementDrawers.has(physicalElement.constructor.name)) {
             // if there is no drawer for this type of physical element, then we create a new drawer
             switch (physicalElement.constructor.name) {
-                case "Structure":
+                case Structure.name:
                     this.physicalElementDrawers.set(physicalElement.constructor.name, new StructureDrawer())
                     break
                 default:
-                    console.error(`Error: physical element ${physicalElement.constructor.name} has no drawer found.`)
-                    return  // we should not continue since there is no drawer
+                    throw Error(`Error: physical element ${physicalElement.constructor.name} has no drawer found.`)
             }
         }
         let drawer = this.physicalElementDrawers.get(physicalElement.constructor.name) as PhysicalElementDrawer
