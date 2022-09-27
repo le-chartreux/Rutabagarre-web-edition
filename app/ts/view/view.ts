@@ -69,8 +69,6 @@ class View {
         this._scene.actualize(this._physicalElementsGetter())
         this._mainCamera.position.set(...this.cameraPosition)
         this._mainCamera.lookAt(...this.cameraTarget, 0)
-        console.log("position: " + String(this.cameraPosition))
-        console.log("target: " + String(this.cameraTarget))
         this._renderer.render(this._scene, this._mainCamera)
     }
 
