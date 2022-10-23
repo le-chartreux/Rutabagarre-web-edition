@@ -24,7 +24,7 @@ abstract class PhysicalElement {
      * Updates this element (does everything needed on this tick)
      */
     public update(): void {
-        console.log("elem updated")  // todo
+        // todo update system
     }
 
     /**
