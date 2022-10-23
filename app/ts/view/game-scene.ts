@@ -29,7 +29,23 @@ class GameScene extends THREE.Scene {
      */
     public actualize(physicalElements: PhysicalElement[]): void {
         // for each element, treating possible changes
-        // TODO
+        const allUuidOfChildren = this.children.map((object3D) => object3D.uuid)
+
+        for (const physicalElement of physicalElements) {
+            if (allUuidOfChildren.includes(physicalElement.uuid)) {
+                // element already draw
+                let object3DOfThisPhysicalElement = this.children.filter(
+                    (object3D) => object3D.uuid == physicalElement.uuid
+                )[0]
+                // if it is already draw, it has a drawer
+                let drawer = this.physicalElementDrawers.get(physicalElement.constructor.name) as PhysicalElementDrawer
+                drawer.treatPossibleChanges(physicalElement, object3DOfThisPhysicalElement)
+            } else {
+                // element not draw => draw it
+                this.createPhysicalElement(physicalElement)
+            }
+        }
+
         // for each child, checking if the element still exists (and removing it from the scene if not)
         // TODO
     }

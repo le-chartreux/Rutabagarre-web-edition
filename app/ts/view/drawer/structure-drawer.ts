@@ -14,7 +14,7 @@ class StructureDrawer implements PhysicalElementDrawer{
         this.loadedMaterials = new Map<StructureType, THREE.Material>()
     }
 
-    get3dObject(structure: Structure): THREE.Mesh {
+    public get3dObject(structure: Structure): THREE.Mesh {
         if (! this.loadedGeometries.has(structure.structureType)) {
             // adding the new geometry to the loaded geometries
             this.loadedGeometries.set(structure.structureType, new THREE.BoxGeometry())
@@ -23,11 +23,23 @@ class StructureDrawer implements PhysicalElementDrawer{
 
         if (! this.loadedMaterials.has(structure.structureType)) {
             // adding the new material to the loaded materials
-            this.loadedMaterials.set(structure.structureType, new THREE.MeshStandardMaterial({color: 0xFFAD00}))
+            this.loadedMaterials.set(
+                structure.structureType,
+                new THREE.MeshStandardMaterial({color: 0xFFAD00})
+            )
         }
         let material = this.loadedMaterials.get(structure.structureType) as THREE.Material
 
         return new THREE.Mesh(geometry, material)
+    }
+
+    public treatPossibleChanges(physicalElement: PhysicalElement, object3DOfThisPhysicalElement: THREE.Object3D): void {
+        if (object3DOfThisPhysicalElement.position.x != physicalElement.x) {
+            object3DOfThisPhysicalElement.position.x = physicalElement.x
+        }
+        if (object3DOfThisPhysicalElement.position.y != physicalElement.y) {
+            object3DOfThisPhysicalElement.position.y = physicalElement.y
+        }
     }
 }
 
