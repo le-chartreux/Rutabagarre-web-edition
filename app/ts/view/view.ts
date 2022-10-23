@@ -2,7 +2,8 @@ import * as THREE from 'three'
 import WebGL from 'three/examples/jsm/capabilities/WebGL'
 import {GameScene} from "~app/ts/view/game-scene";
 import {PhysicalElement} from "~app/ts/world/physical-element";
-import {StructureDrawer} from "~app/ts/view/drawer/structure-drawer";
+import Stats from "three/examples/jsm/libs/stats.module";
+
 
 class View {
     // page attributes
@@ -12,6 +13,9 @@ class View {
     private _renderer: THREE.WebGLRenderer
     private _mainCamera: THREE.PerspectiveCamera
     private _scene: GameScene
+
+    // fps counter with stats
+    private _stats = Stats()
 
     /**
      * Creates a View object, a tool to manage the view.
@@ -53,6 +57,9 @@ class View {
 
         // creating the scene object, that represents the content that will be rendered
         this._scene = new GameScene()
+
+        // adding the stats (fps counter) to the window
+        document.body.appendChild(this._stats.dom)
     }
 
     /**
@@ -66,8 +73,15 @@ class View {
      * Updates the view. Each call to <tick> actualizes the scene, then renders it.
      */
     private tick(): void {
+        // update of the fps counter
+        this._stats.update()
+
         this._scene.actualize(this._physicalElementsGetter())
-        this._mainCamera.position.set(...this.cameraPosition)
+
+        const newCameraPosition = this.cameraPosition
+        if (newCameraPosition != this.cameraPosition) {
+            //this._mainCamera.position.set(...newCameraPosition)
+        }
         this._mainCamera.lookAt(...this.cameraTarget, 0)
         this._renderer.render(this._scene, this._mainCamera)
     }
@@ -85,7 +99,7 @@ class View {
     /**
      * Method to update the viewport on resize
      */
-    public onResize() {
+     public onResize() {
         // resetting the dimensions
         this._width = window.innerWidth
         this._height = window.innerHeight
